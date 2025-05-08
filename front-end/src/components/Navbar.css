@@ -1,0 +1,121 @@
+/* Navbar.css */
+
+.navbar-custom {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease-in-out;
+  }
+  
+  .navbar-brand span {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #fff;
+    animation: glowPulse 2.5s infinite ease-in-out;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .navbar-brand span:hover {
+    transform: scale(1.07);
+  }
+  
+  /* Nav Links */
+  .nav-center .nav-link {
+    color: #ffffffcc !important;
+    position: relative;
+    transition: all 0.25s ease-in-out;
+    opacity: 0;
+    animation: slideFadeIn 0.6s ease forwards;
+  }
+  
+  .nav-center .nav-link:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  .nav-center .nav-link:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+  .nav-center .nav-link:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  
+  .nav-center .nav-link.active,
+  .nav-center .nav-link:hover {
+    color: #fff !important;
+    font-weight: 500;
+  }
+  
+  .nav-center .nav-link::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0%;
+    background-color: #fff;
+    transition: width 0.3s;
+  }
+  
+  .nav-center .nav-link:hover::after,
+  .nav-center .nav-link.active::after {
+    width: 100%;
+  }
+  
+  /* Logout Button */
+  .btn-logout {
+    transition: background-color 0.3s ease-in-out, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .btn-logout:hover {
+    background-color: #dc3545 !important;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
+  }
+  
+  /* Modal Backdrop & Dialog */
+  .modal-backdrop-animated {
+    animation: fadeInBackdrop 0.3s ease forwards;
+  }
+  
+  .modal-dialog-animated {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+  
+  /* Animations */
+  @keyframes glowPulse {
+    0%, 100% {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.9);
+    }
+  }
+  
+  @keyframes fadeInBackdrop {
+    from {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideFadeIn {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  

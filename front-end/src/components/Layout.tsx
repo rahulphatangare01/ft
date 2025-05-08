@@ -7,15 +7,27 @@ const Layout: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
+    setIsSidebarCollapsed(prev => !prev);
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Navbar />
-      <div className="d-flex flex-grow-1">
+    <div className="min-h-screen overflow-x-hidden bg-gray-100">
+      {/* Fixed Top Navbar */}
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <Navbar />
+      </div>
+
+      {/* Sidebar + Content Layout (starts below navbar) */}
+      <div className="pt-[64px] flex">
+        {/* Sidebar positioned below navbar */}
         <Sidebar isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
-        <main className="flex-grow-1 p-4 bg-light">
+
+        {/* Main content */}
+        <main
+          className={`flex-grow transition-all duration-300 p-4 bg-light min-h-[calc(100vh-64px)] ${
+            isSidebarCollapsed ? 'ml-[5px]' : 'ml-[170px]'
+          }`}
+        >
           <Outlet />
         </main>
       </div>

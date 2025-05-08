@@ -1,88 +1,155 @@
-import React, { useState, useEffect } from 'react';
-import { useBudget } from '../context/BudgetContext';
-import { Budget } from '../types';
-import toast from 'react-hot-toast';
-
+import React, { useState, useEffect } from "react";
+// import { useBudget } from '../context/BudgetContext';
+import { Budget } from "../types";
+import toast from "react-hot-toast";
+import "./BudgetForm.css";
+import {
+  addBudgetCategoryThunk,
+  updateBudgetCategoryThunk,
+} from "../store/thunk/budget/budget.thunk";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { getBudgetCategoryById } from "../services/budgetCategory/budgetCategory.service";
 interface BudgetFormProps {
   onClose: () => void;
   budgetId?: string | null;
+  onEdit?: (id: string, data: any) => void;
+  updateBudgetData?: (data: any) => void;
 }
 
-const BudgetForm: React.FC<BudgetFormProps> = ({ onClose, budgetId }) => {
-  const { addBudget, updateBudget, getBudget } = useBudget();
-  const [formData, setFormData] = useState<Omit<Budget, 'id'>>({
-    category: '',
-    amount: 0
+const BudgetForm: React.FC<BudgetFormProps> = ({
+  onClose,
+  budgetId,
+  onEdit,
+}) => {
+  // const { addBudget, updateBudget, getBudget } = useBudget();
+  // const [formData, setFormData] = useState<Omit<Budget, "id">>({
+  //   category: "",
+  //   amount: 0,
+  // });
+  console.log("updateBudgetData", onEdit);
+  const [formData, setFormData] = useState<Budget>({
+    category: "",
+    amount: 0,
   });
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(
+    () => {
+      const fetchBudgetData = async () => {
+        if (budgetId) {
+          try {
+            const budget = await getBudgetCategoryById(budgetId);
+            if (budget) {
+              console.log("Budget data fetched:", budget.data);
+              setFormData({
+                category: budget?.data?.category,
+                amount: budget?.data?.amount,
+              });
+            }
+          } catch (error) {
+            console.error("Error fetching budget data:", error);
+          }
+        }
+      };
+      fetchBudgetData();
+      //   // Fetch the budget data using the budgetId and set it in the form
 
-  useEffect(() => {
-    if (budgetId) {
-      const budget = getBudget(budgetId);
-      if (budget) {
-        setFormData({
-          category: budget.category,
-          amount: budget.amount
-        });
-      }
-    }
-  }, [budgetId, getBudget]);
+      // Replace with your logic to fetch the budget data
+      //   const budget = getBudget(budgetId);
+      //   if (budget) {
+      //     setFormData({
+      //       category: budget.category,
+      //       amount: budget.amount
+      //     });
+      //   }
+    },
+    // }, [budgetId, getBudget]);
+    [budgetId]
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (budgetId) {
-      updateBudget(budgetId, formData);
-      toast.success('Budget category updated successfully');
+      console.log(formData, "FormData- budjet update");
+      // updateBudget(budgetId, formData);
+      const payload = {
+        id: budgetId,
+        category: formData.category,
+        amount: formData.amount,
+      };
+      try {
+        const success = await dispatch(updateBudgetCategoryThunk(payload));
+        if (updateBudgetCategoryThunk.fulfilled.match(success)) {
+          // console.log("Budget category updated successfully:", success);
+          toast.success("Budget category updated successfully");
+        }
+      } catch (error) {
+        console.error("Error updating budget category:", error);
+        toast.error("Error updating budget category");
+      }
+      onClose();
     } else {
-      addBudget(formData);
-      toast.success('Budget category added successfully');
+      // addBudget(formData);
+      const success = await dispatch(addBudgetCategoryThunk(formData));
+      if (addBudgetCategoryThunk.fulfilled.match(success)) {
+        console.log("Budget category added successfully:", success);
+        toast.success("Budget category added successfully");
+      }
+      onClose();
+      // console.log(formData, "FormData- budjet");
     }
-    onClose();
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">
-        {budgetId ? 'Edit Budget Category' : 'Add Budget Category'}
-      </h2>
-      <form onSubmit={handleSubmit} className="animate-fade-in">
-        <div className="mb-3">
-          <label className="form-label">Category</label>
-          <input
-            type="text"
-            className="form-control"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="form-label">Amount</label>
-          <input
-            type="number"
-            className="form-control"
-            value={formData.amount}
-            onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) })}
-            required
-            min="0"
-            step="0.01"
-          />
-        </div>
-        <div className="d-flex gap-2">
-          <button 
-            type="submit" 
-            className="btn btn-primary hover:bg-primary-dark transition-colors"
-          >
-            {budgetId ? 'Update' : 'Add'} Budget
-          </button>
-          <button 
-            type="button" 
-            className="btn btn-secondary hover:bg-gray-600 transition-colors" 
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+    <div className="modal-overlay">
+      <div className="modal-dialog">
+        <h2 className="modal-title">
+          {budgetId ? "Edit Budget Category" : "Add Budget Category"}
+        </h2>
+        <p className="modal-description">
+          Fill in the fields below to manage your budget.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label className="form-label">Category</label>
+            <input
+              type="text"
+              className="form-control"
+              value={formData.category}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div>
+            <label className="form-label">Amount</label>
+            <input
+              type="number"
+              className="form-control"
+              value={formData.amount}
+              onChange={(e) =>
+                setFormData({ ...formData, amount: parseFloat(e.target.value) })
+              }
+              required
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div className="button-group">
+            <button type="submit" className="btn btn-primary">
+              {budgetId ? "Update" : "Add"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={onClose}
+            >
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
