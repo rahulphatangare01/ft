@@ -516,7 +516,7 @@ const Dashboard: React.FC = () => {
                   `${name}: ${(percent * 100).toFixed(0)}%`
                 }
               >
-                {categoryExpense.map(( index: any) => (
+                {categoryExpense.map((_, index: any) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
