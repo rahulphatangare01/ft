@@ -9,7 +9,6 @@ import { registrationThunk } from "../store/thunk/auth/auth.thunk";
 
 const Register: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,9 +43,8 @@ const Register: React.FC = () => {
     delete data.confirmPassword;
 
     dispatch(registrationThunk(data));
-
     // Placeholder for register logic
-    console.log("Registered:", data);
+
     navigate("/login");
   };
 

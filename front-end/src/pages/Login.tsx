@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
+
 import { Eye, EyeOff } from "lucide-react";
 import budgetTrackerLogo from "../assets/loginLogo.png";
 import { useDispatch } from "react-redux";
@@ -11,19 +11,16 @@ import "./Login.css"; // Include animations, themes, and switch styles
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
-  // const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [globalError, setGlobalError] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
   const navigate = useNavigate();
-  // const { login } = useAuth();
 
   useEffect(() => {
     const timeout = setTimeout(() => setFadeIn(true), 100);
@@ -52,23 +49,18 @@ const Login: React.FC = () => {
         identifier: email,
         password: password,
       };
-      // const success = dispatch(loginThunk(data));
+
       const success = await dispatch(loginThunk(data));
 
       if (loginThunk.fulfilled.match(success)) {
-        // console.log("Login successful:", success);
         const result = success.payload;
         if (result.success === true) {
-          console.log("Login result:", result);
           const token = result.data.token;
           const userName = result.data.user.name;
           localStorage.setItem("userName", userName);
-          localStorage.setItem("authToken", token);
-          console.log(result.data.user, "user");
+          localStorage.setItem("authToken", token); 
           navigate("/");
         }
-
-        // login(result.payload); // Call the login function from AuthContext
       }
     } catch (error) {
       console.log("Login error:", error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { useTransactions } from '../context/TransactionContext';
+
 import { Transaction } from "../types";
 import toast from "react-hot-toast";
 import "./TransactionForm.css"; // Make sure this CSS file exists
@@ -22,15 +22,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
   transactionId,
   transactionData,
 }) => {
-  // const { addTransaction, updateTransaction, getTransaction } = useTransactions();
-  // const getTransaction = "";
-  // const [formData, setFormData] = useState<Omit<Transaction, "id">>({
-  //   type: "expense",
-  //   amount: 0,
-  //   category: "",
-  //   description: "",
-  //   date: new Date().toISOString().split("T")[0],
-  // });
   const [formData, setFormData] = useState<Transaction>({
     type: "",
     amount: 0,
@@ -53,27 +44,10 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
   ];
 
   const dispatch = useDispatch<AppDispatch>();
-  // console.log(budgetOption, "budgetOption");
-  useEffect(() => {
-    // if (transactionId) {
-    // const transaction = getTransaction(transactionId);
-    // if (transaction) {
-    //   setFormData({
-    //     type: transaction.type,
-    //     amount: transaction.amount,
-    //     category: transaction.category,
-    //     description: transaction.description,
-    //     date: transaction.date.split("T")[0],
-    //   });
-    // }
-    // }
-    // }, [transactionId, getTransaction]);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (transactionId) {
-      // updateTransaction(transactionId, formData);
       const payload = {
         id: transactionId,
         type: formData.type,
@@ -92,9 +66,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         toast.error("Error updating transaction");
       }
     } else {
-      // addTransaction(formData);
       try {
-        // console.log("Formdata", formData);
         const success = await dispatch(addTransactionThunk(formData));
         if (addTransactionThunk.fulfilled.match(success)) {
           toast.success("Transaction updated successfully");
@@ -103,8 +75,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         console.error("Error i Creating transaction:", error);
         toast.error("Error creating transaction");
       }
-      // console.log(formData, "FormData- transaction add");
-      // toast.success("Transaction added successfully");
     }
     onClose();
   };
@@ -116,10 +86,10 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         if (data.data.length > 0) {
           let category = [];
           setTableData(data.data);
-          // console.log("data.data", data.data);
+
           data?.data?.map((item: any) => {
             category.push(item.category);
-            // console.log(category, "item in map");
+
             setBudgetOption(category);
           });
         }
@@ -132,14 +102,12 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
   }, [budgetCategories]);
 
   useEffect(() => {
-    console.log("transactionData: ", transactionData);
     if (transactionData) {
       setFormData({
         type: transactionData?.type,
         amount: transactionData?.amount,
         categoryId: transactionData?.categoryId,
         description: transactionData?.description,
-        // date: new Date().toISOString().split("T")[0],
         date: transactionData?.date,
       });
     }
@@ -153,22 +121,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
         </h2>
         <p className="modal-subtitle">Fill in the details below</p>
         <form onSubmit={handleSubmit}>
-          {/* <div className="form-group">
-            <label>Type</label>
-            <select
-              value={formData.type}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  type: e.target.value as "income" | "expense",
-                })
-              }
-              required
-            >
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-          </div> */}
           <div className="form-group">
             <label>Type</label>
             <select
@@ -176,7 +128,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  type: e.target.value, // ✅ No need to manually set the type here
+                  type: e.target.value,
                 })
               }
               required
@@ -206,17 +158,6 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
             />
           </div>
 
-          {/* <div className="form-group">
-            <label>Category</label>
-            <input
-              type="text"
-              value={formData.category}
-              onChange={(e) =>
-                setFormData({ ...formData, category: e.target.value })
-              }
-              required
-            />
-          </div> */}
           <div className="form-group">
             <label>Category</label>
             <select

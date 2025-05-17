@@ -13,7 +13,7 @@ const errorHandler = require('./middlewares/error.middleware')
 const allowedOrigins = [
     'http://localhost:5174',
     'http://localhost:5173',            // Local development     // Local development
-    'https://finance-tracker-0101.netlify.app' // Netlify deployed frontend
+    'https://finance-tracker-0101.netlify.app' // Netlify deployed frontend,s
   ];
 
   const corsOptions = {

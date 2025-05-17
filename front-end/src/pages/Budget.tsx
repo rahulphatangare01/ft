@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { useBudget } from "../context/BudgetContext";
 import BudgetForm from "../components/BudgetForm";
 import BudgetList from "../components/BudgetList";
 import { Plus } from "lucide-react";
@@ -7,7 +6,6 @@ import { Plus } from "lucide-react";
 const Budget: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingBudget, setEditingBudget] = useState<string | null>(null);
-  // const { budgets } = useBudget();
 
   return (
     <div className="ml-8 pl-12">

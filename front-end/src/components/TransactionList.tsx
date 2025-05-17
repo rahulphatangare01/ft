@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { useTransactions } from '../context/TransactionContext';
 import { Edit2, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
@@ -15,7 +14,6 @@ interface TransactionListProps {
 }
 
 const TransactionList: React.FC<TransactionListProps> = ({ onEdit }) => {
-  // const { transactions, deleteTransaction } = useTransactions();
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState({
     date: "",
@@ -23,7 +21,6 @@ const TransactionList: React.FC<TransactionListProps> = ({ onEdit }) => {
     amount: "",
   });
   const transaction = useSelector((state: RootState) => state.transaction);
-  console.log(transaction, "transaction");
   const itemsPerPage = 10;
   const [tableData, setTableData] = React.useState<any[]>([]);
   const dispatch = useDispatch<AppDispatch>();
@@ -39,15 +36,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ onEdit }) => {
     );
   });
 
-  // const paginatedTransactions: any = [];
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-  console.log(totalPages, "totalPages");
   const paginatedTransactions = filteredTransactions.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  // const totalPages = 1;
 
   const handleDelete = async (id: string, title: string) => {
     const result = await Swal.fire({
@@ -64,18 +57,15 @@ const TransactionList: React.FC<TransactionListProps> = ({ onEdit }) => {
     });
 
     if (result.isConfirmed) {
-      // deleteTransaction(id);
       const success = await dispatch(deleteTransactionThunk(id));
       if (deleteTransactionThunk.fulfilled.match(success)) {
         toast.success("Transaction deleted successfully");
       } else {
-        console.log("Error deleting transaction:", success);
         toast.error("Error deleting Transaction");
       }
     }
   };
 
-  console.log("TableData", tableData);
   useEffect(() => {
     const fetchTransactionCategories = async () => {
       try {

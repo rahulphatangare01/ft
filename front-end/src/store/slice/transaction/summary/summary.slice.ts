@@ -19,72 +19,6 @@ const intialState: Summarystate = {
   loading: false,
   error: null,
 };
-// const summarySlice = createSlice({
-//   name: "summary",
-//   intialState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     // Total Summary
-//     builder.addCase(getTotalSummaryThunk.pending, (state) => {
-//       state.loading = true;
-//       state.error = null;
-//     });
-//     builder.addCase(
-//       getTotalSummaryThunk.fulfilled,
-//       (state, action: PayloadAction<any>) => {
-//         state.loading = false;
-//         state.totalSummary = action.payload;
-//       }
-//     );
-//     builder.addCase(
-//       getTotalSummaryThunk.rejected,
-//       (state, action: PayloadAction<any>) => {
-//         state.loading = false;
-//         state.error = action.payload;
-//       }
-//     );
-
-//     // Category Expense
-//     builder.addCase(getCategoryExpenseThunk.pending, (state) => {
-//       state.loading = true;
-//       state.error = null;
-//     });
-//     builder.addCase(
-//       getCategoryExpenseThunk.fulfilled,
-//       (state, action: PayloadAction<any>) => {
-//         state.loading = false;
-//         state.categoryExpense = action.payload;
-//       }
-//     );
-//     builder.addCase(
-//       getCategoryExpenseThunk.rejected,
-//       (state, action: PayloadAction<any>) => {
-//         state.loading = false;
-//         state.error = action.payload;
-//       }
-//     );
-
-//     // Monthly Expense
-//     builder.addCase(getMontlyExpenseThunk.pending, (state) => {
-//       state.loading = true;
-//       state.error = null;
-//     });
-//     builder.addCase(
-//       getMontlyExpenseThunk.fulfilled,
-//       (state, action: PayloadAction<any>) => {
-//         state.loading = false;
-//         state.montlyExpense = action.payload;
-//       }
-//     );
-//     builder.addCase(
-//       getMontlyExpenseThunk.rejected,
-//       (state, action: PayloadAction<any>) => {
-//         state.loading = false;
-//         state.error = action.payload;
-//       }
-//     );
-//   },
-// });
 
 const summarySlice = createSlice({
   name: "summary",
@@ -99,7 +33,7 @@ const summarySlice = createSlice({
       getTotalSummaryThunk.fulfilled,
       (state, action: PayloadAction<any>) => {
         state.loading = false;
-        console.log("Total Summary", action.payload);
+
         state.totalSummary = action.payload.data;
       }
     );
@@ -108,6 +42,7 @@ const summarySlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
+        console.error("Error in Get Total Summary", action.payload);
       }
     );
     // Category Expense
@@ -127,6 +62,7 @@ const summarySlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
+        console.error("Error in Get Catory expeense slice", action.payload);
       }
     );
 
@@ -148,6 +84,7 @@ const summarySlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
+        console.error("Error in get montly expense slice", action.payload);
       }
     );
   },

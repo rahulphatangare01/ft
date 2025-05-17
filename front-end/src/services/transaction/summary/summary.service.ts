@@ -1,13 +1,10 @@
-import axios from "axios";
+import axios from "../../api/axiosConfig";
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
+//  Get Total summary
 export const getTotalSummary = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.get(`/api/summary/totals`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(`${API_ENDPOINT}/summary/totals`, {});
     const data = response?.data;
     if (data) {
       return data;
@@ -18,14 +15,13 @@ export const getTotalSummary = async () => {
   }
 };
 
+//  Get Category Expense
 export const getCategoryExpense = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.get(`/api/summary/category-expense`, {
-      headers: {
-        Authorization: `Bearer ${token} `,
-      },
-    });
+    const response = await axios.get(
+      `${API_ENDPOINT}/summary/category-expense`,
+      {}
+    );
     const data = response?.data;
     if (data) {
       return data;
@@ -36,14 +32,13 @@ export const getCategoryExpense = async () => {
   }
 };
 
+//  Get Montly Expense
 export const getMontlyExpense = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.get("/api/summary/monthly-expense", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${API_ENDPOINT}/summary/monthly-expense`,
+      {}
+    );
     const data = response?.data;
     if (data) {
       return data;

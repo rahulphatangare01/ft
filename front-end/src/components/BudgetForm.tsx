@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { useBudget } from '../context/BudgetContext';
 import { Budget } from "../types";
 import toast from "react-hot-toast";
 import "./BudgetForm.css";
@@ -13,65 +12,38 @@ import { getBudgetCategoryById } from "../services/budgetCategory/budgetCategory
 interface BudgetFormProps {
   onClose: () => void;
   budgetId?: string | null;
-  onEdit?: (id: string, data: any) => void;
   updateBudgetData?: (data: any) => void;
 }
 
-const BudgetForm: React.FC<BudgetFormProps> = ({
-  onClose,
-  budgetId,
-  onEdit,
-}) => {
-  // const { addBudget, updateBudget, getBudget } = useBudget();
-  // const [formData, setFormData] = useState<Omit<Budget, "id">>({
-  //   category: "",
-  //   amount: 0,
-  // });
-  console.log("updateBudgetData", onEdit);
+const BudgetForm: React.FC<BudgetFormProps> = ({ onClose, budgetId }) => {
   const [formData, setFormData] = useState<Budget>({
     category: "",
     amount: 0,
   });
   const dispatch = useDispatch<AppDispatch>();
-  useEffect(
-    () => {
-      const fetchBudgetData = async () => {
-        if (budgetId) {
-          try {
-            const budget = await getBudgetCategoryById(budgetId);
-            if (budget) {
-              console.log("Budget data fetched:", budget.data);
-              setFormData({
-                category: budget?.data?.category,
-                amount: budget?.data?.amount,
-              });
-            }
-          } catch (error) {
-            console.error("Error fetching budget data:", error);
+  useEffect(() => {
+    const fetchBudgetData = async () => {
+      if (budgetId) {
+        try {
+          const budget = await getBudgetCategoryById(budgetId);
+          if (budget) {
+            
+            setFormData({
+              category: budget?.data?.category,
+              amount: budget?.data?.amount,
+            });
           }
+        } catch (error) {
+          console.error("Error fetching budget data:", error);
         }
-      };
-      fetchBudgetData();
-      //   // Fetch the budget data using the budgetId and set it in the form
-
-      // Replace with your logic to fetch the budget data
-      //   const budget = getBudget(budgetId);
-      //   if (budget) {
-      //     setFormData({
-      //       category: budget.category,
-      //       amount: budget.amount
-      //     });
-      //   }
-    },
-    // }, [budgetId, getBudget]);
-    [budgetId]
-  );
+      }
+    };
+    fetchBudgetData();
+  }, [budgetId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (budgetId) {
-      console.log(formData, "FormData- budjet update");
-      // updateBudget(budgetId, formData);
       const payload = {
         id: budgetId,
         category: formData.category,
@@ -80,23 +52,18 @@ const BudgetForm: React.FC<BudgetFormProps> = ({
       try {
         const success = await dispatch(updateBudgetCategoryThunk(payload));
         if (updateBudgetCategoryThunk.fulfilled.match(success)) {
-          // console.log("Budget category updated successfully:", success);
           toast.success("Budget category updated successfully");
         }
       } catch (error) {
-        console.error("Error updating budget category:", error);
         toast.error("Error updating budget category");
       }
       onClose();
     } else {
-      // addBudget(formData);
       const success = await dispatch(addBudgetCategoryThunk(formData));
       if (addBudgetCategoryThunk.fulfilled.match(success)) {
-        console.log("Budget category added successfully:", success);
         toast.success("Budget category added successfully");
       }
       onClose();
-      // console.log(formData, "FormData- budjet");
     }
   };
 

@@ -1,36 +1,11 @@
-// import axios from "../api/axiosConfig";
-
-// export const getBudgetCategories = async () => {
-//   try {
-
-//     const response = await axios.get("/api/budget-category");
-
-//     const data = response?.data;
-//     if (data) {
-//       console.log("Budget categories fetched successfully:", data);
-//       return data;
-//     }
-//   } catch (error) {
-//     console.error("Error fetching budget categories:", error);
-//     throw error;
-//   }
-// };
-import axios from "axios";
+import axios from "../api/axiosConfig";
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
 export const getBudgetCategories = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-
-    const response = await axios.get("/api/budget-category", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // You can add custom headers here if needed
-      },
-    });
-
+    const response = await axios.get(`${API_ENDPOINT}/budget-category`);
     const data = response?.data;
     if (data) {
-      // console.log("Budget categories fetched successfully:", data);
       return data;
     }
   } catch (error) {
@@ -39,20 +14,16 @@ export const getBudgetCategories = async () => {
   }
 };
 
+//  Add  BudgetCategory
 export const addBudgetCategory = async (category: any) => {
   try {
-    const token = localStorage.getItem("authToken");
-
-    const response = await axios.post("/api/budget-category", category, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // You can add custom headers here if needed
-      },
-    });
-
+    const response = await axios.post(
+      `${API_ENDPOINT}/budget-category`,
+      category,
+      {}
+    );
     const data = response?.data;
     if (data) {
-      console.log("Budget category added successfully:", data);
       return data;
     }
   } catch (error) {
@@ -61,23 +32,17 @@ export const addBudgetCategory = async (category: any) => {
   }
 };
 
+//  Update BudgetCategory
 export const updateBudgetCategory = async (category: any) => {
   try {
-    const token = localStorage.getItem("authToken");
-    console.log(category, "SASAASA");
     const response = await axios.put(
-      `/api/budget-category/${category.id}`,
+      `${API_ENDPOINT}/budget-category/${category.id}`,
       category,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      {}
     );
 
     const data = response?.data;
     if (data) {
-      // console.log("Budget category updated successfully:", data);
       return data;
     }
   } catch (error) {
@@ -86,20 +51,17 @@ export const updateBudgetCategory = async (category: any) => {
   }
 };
 
+//  Get By Id BudgetCategory
+
 export const getBudgetCategoryById = async (id: string) => {
   try {
-    const token = localStorage.getItem("authToken");
-
-    const response = await axios.get(`/api/budget-category/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // You can add custom headers here if needed
-      },
-    });
+    const response = await axios.get(
+      `${API_ENDPOINT}/budget-category/${id}`,
+      {}
+    );
 
     const data = response?.data;
     if (data) {
-      // console.log("Budget category fetched successfully:", data);
       return data;
     }
   } catch (error) {
@@ -108,20 +70,17 @@ export const getBudgetCategoryById = async (id: string) => {
   }
 };
 
+//  Delete BudgetCategory
+
 export const deleteBudgetCategory = async (id: string) => {
   try {
-    const token = localStorage.getItem("authToken");
-
-    const response = await axios.delete(`/api/budget-category/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // You can add custom headers here if needed
-      },
-    });
+    const response = await axios.delete(
+      `${API_ENDPOINT}/budget-category/${id}`,
+      {}
+    );
 
     const data = response?.data;
     if (data) {
-      console.log("Budget category deleted successfully:", data);
       return data;
     }
   } catch (error) {

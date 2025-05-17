@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-// import { useBudget } from '../context/BudgetContext';
-// import { useTransactions } from "../context/TransactionContext";
+
 import { Edit2, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
@@ -15,18 +14,9 @@ interface BudgetListProps {
 }
 
 const BudgetList: React.FC<BudgetListProps> = ({ onEdit }) => {
-  // const { budgets, deleteBudget } = useBudget();
-  // const { transactions } = useTransactions();
-  // const calculateSpent = (category: string) => {
-  //   return transactions
-  //     .filter((t) => t.type === "expense" && t.category === category)
-  //     .reduce((sum, t) => sum + t.amount, 0);
-  // };
   const [tableData, setTableData] = React.useState<any[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const budgetCategories = useSelector((state: RootState) => state.budget);
-
-  // const budgets = budgetCategories.budgetCategories;
 
   const handleDelete = async (id: string, title: string) => {
     const result = await Swal.fire({
@@ -40,10 +30,9 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit }) => {
     });
 
     if (result.isConfirmed) {
-      // deleteBudget(id);
       const success = await dispatch(deleteBudgetCategoryThunk(id));
       if (deleteBudgetCategoryThunk.fulfilled.match(success)) {
-        console.log("Budget category deleted successfully:", success);
+       
         toast.success("Budget category deleted successfully");
       } else {
         console.error("Error deleting budget category:", success);
@@ -53,18 +42,11 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit }) => {
     }
   };
 
-  const updateBudgetCategory = async (data: any) => {
-    // console.log(id, "Budget category id to update");
-    console.log(data, "Budget category data to update");
-  };
-
   useEffect(() => {
     const fetchBudgetCategories = async () => {
       try {
         const data = await getBudgetCategories();
-        // const data = await dispatch(getBudgetCategories());
 
-        // console.log(data.data, "Budget categories fetched successfully");
         setTableData(data?.data);
       } catch (error) {
         console.error("Error fetching budget categories:", error);
@@ -72,10 +54,6 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit }) => {
     };
 
     fetchBudgetCategories();
-    // dispatch(getBudgetCategoriesThunk());
-    // const data = getBudgetCategories();
-    // console.log(data, "Budget categories fetched successfully");
-    // console.log("One");
   }, [budgetCategories]);
 
   return (
@@ -86,19 +64,13 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit }) => {
             <tr>
               <th>Category</th>
               <th>Budget</th>
-              {/* <th>Spent</th> */}
-              {/* <th>Remaining</th> */}
-              {/* <th>Progress</th> */}
+
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {tableData.length > 0 ? (
               tableData.map((budget: any, index: any) => {
-                // const spent = calculateSpent(budget.category);
-                // const remaining = budget.amount - spent;
-                // const progress = (spent / budget.amount) * 100;
-
                 return (
                   <motion.tr
                     key={budget.id}
@@ -109,32 +81,14 @@ const BudgetList: React.FC<BudgetListProps> = ({ onEdit }) => {
                   >
                     <td>{budget.category}</td>
                     <td className="text-green">${budget.amount.toFixed(2)}</td>
-                    {/* <td className="text-red">${spent.toFixed(2)}</td>
-                  <td className={remaining >= 0 ? "text-green" : "text-red"}>
-                    ${remaining.toFixed(2)}
-                  </td> */}
-                    {/* <td>
-                      <div className="progress-bar-background">
-                        <motion.div
-                          // className={`progress-bar-fill ${
-                          // progress > 100 ? "danger" : "success"
-                          // }`}
-                          // style={{ width: `${Math.min(progress, 100)}%` }}
-                          // data-label={`${progress.toFixed(1)}%`}
-                          initial={{ width: 0 }}
-                          // animate={{ width: `${Math.min(progress, 100)}%` }}
-                          transition={{ duration: 0.6 }}
-                        ></motion.div>
-                      </div>
-                    </td> */}
+
                     <td>
                       <div className="button-group">
                         <button
                           className="edit-btn"
                           onClick={() => {
                             onEdit(budget.id, budget);
-                            updateBudgetCategory(budget);
-                            // toast("Editing budget category", { icon: "✏️" });
+                            
                           }}
                           title="Edit"
                         >

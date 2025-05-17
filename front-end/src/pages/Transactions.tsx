@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { useTransactions } from '../context/TransactionContext';
 import TransactionForm from "../components/TransactionForm";
 import TransactionList from "../components/TransactionList";
 import { Plus } from "lucide-react";
@@ -11,7 +10,6 @@ const Transactions: React.FC = () => {
   );
 
   const [transactionDataToEdit, setTransactionDataToEdit] = useState<any>();
-  // const { transactions } = useTransactions();
 
   return (
     <div className="ml-8 pl-12">

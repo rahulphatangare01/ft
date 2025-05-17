@@ -24,20 +24,12 @@ const budgetSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getBudgetCategoriesThunk.pending, (state) => {
-      // console.log(
-      //   "getBudgetCategoriesThunk reducer-pending:--->",
-      //   action.payload
-      // );
       state.loading = true;
       state.error = null;
     });
     builder.addCase(
       getBudgetCategoriesThunk.fulfilled,
       (state, action: PayloadAction<any>) => {
-        console.log(
-          "getBudgetCategoriesThunk reducer-fulfilled:--->",
-          action.payload
-        );
         state.loading = false;
         state.budgetCategories = action.payload;
       }
@@ -45,7 +37,7 @@ const budgetSlice = createSlice({
     builder.addCase(
       getBudgetCategoriesThunk.rejected,
       (state, action: PayloadAction<any>) => {
-        console.log(
+        console.error(
           "getBudgetCategoriesThunk reducer-rejected:--->",
           action.payload
         );
@@ -54,20 +46,12 @@ const budgetSlice = createSlice({
       }
     );
     builder.addCase(addBudgetCategoryThunk.pending, (state) => {
-      // console.log(
-      //   "addBudgetCategoryThunk reducer-pending:--->",
-      //   action.payload
-      // );
       state.loading = true;
       state.error = null;
     });
     builder.addCase(
       addBudgetCategoryThunk.fulfilled,
       (state, action: PayloadAction<any>) => {
-        // console.log(
-        //   "addBudgetCategoryThunk reducer-fulfilled:--->",
-        //   action.payload
-        // );
         state.loading = false;
         state.budgetCategories = [...state.budgetCategories, action.payload];
       }
@@ -75,7 +59,7 @@ const budgetSlice = createSlice({
     builder.addCase(
       addBudgetCategoryThunk.rejected,
       (state, action: PayloadAction<any>) => {
-        console.log(
+        console.error(
           "addBudgetCategoryThunk reducer-rejected:--->",
           action.payload
         );
@@ -103,6 +87,7 @@ const budgetSlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
+        console.error("Error in delete category Slice", action.payload);
       }
     );
 

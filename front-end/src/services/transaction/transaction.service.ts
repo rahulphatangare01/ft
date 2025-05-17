@@ -1,13 +1,10 @@
-import axios from "axios";
+import axios from "../api/axiosConfig";
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
+//  Get Transaction
 export const getTransaction = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.get("/api/transaction", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(`${API_ENDPOINT}/transaction`, {});
     const data = response?.data;
     if (data) {
       return data;
@@ -20,14 +17,14 @@ export const getTransaction = async () => {
   }
 };
 
+//  Add Transaction
 export const addTransaction = async (transaction: any) => {
   try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.post("/api/transaction", transaction, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${API_ENDPOINT}/transaction`,
+      transaction,
+      {}
+    );
     const data = response?.data;
     if (data) {
       return data;
@@ -38,17 +35,13 @@ export const addTransaction = async (transaction: any) => {
   }
 };
 
+//  Update Transaction
 export const updateTransaction = async (transaction: any) => {
   try {
-    const token = localStorage.getItem("authToken");
     const response = await axios.put(
-      `/api/transaction/${transaction.id}`,
+      `${API_ENDPOINT}/transaction/${transaction.id}`,
       transaction,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      {}
     );
     const data = response?.data;
     if (data) {
@@ -60,34 +53,13 @@ export const updateTransaction = async (transaction: any) => {
   }
 };
 
-export const getTransactionById = async (id: string) => {
-  try {
-    const token = localStorage.getItem("authToken");
-    console.log(token);
-    const response = await axios.get(`/api/transaction/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response, "Transaction by id response");
-    const data = response?.data;
-    if (data) {
-      return data;
-    }
-  } catch (error) {
-    console.error("Error in Fetching single Transaction:", error);
-    throw error;
-  }
-};
-
+//  Delete Transaction
 export const deleteTransaction = async (id: string) => {
   try {
-    const tooken = localStorage.getItem("authToken");
-    const response = await axios.delete(`/api/transaction/${id}`, {
-      headers: {
-        Authorization: `Bearer ${tooken}`,
-      },
-    });
+    const response = await axios.delete(
+      `${API_ENDPOINT}/transaction/${id}`,
+      {}
+    );
 
     const data = response?.data;
     if (data) {
@@ -95,5 +67,20 @@ export const deleteTransaction = async (id: string) => {
     }
   } catch (error) {
     console.error("Error deleting Transaction:", error);
+  }
+};
+
+//  Get Transaction by Id
+export const getTransactionById = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_ENDPOINT}/transaction/${id}`, {});
+
+    const data = response?.data;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    console.error("Error in Fetching single Transaction:", error);
+    throw error;
   }
 };

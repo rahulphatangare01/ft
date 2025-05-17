@@ -39,6 +39,7 @@ const transactionSlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
+        console.error("Error in get transaction slice", action.payload);
       }
     );
 
@@ -59,7 +60,7 @@ const transactionSlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-        console.log("AddTransation Thunk reducer rejected", action.payload);
+        console.error("AddTransation Thunk reducer rejected", action.payload);
       }
     );
     //    update Transaction
@@ -85,7 +86,7 @@ const transactionSlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-        console.log("update transaction thunk Reducer", action.payload);
+        console.error("update transaction thunk Reducer", action.payload);
       }
     );
 
@@ -108,7 +109,7 @@ const transactionSlice = createSlice({
       (state, action: PayloadAction<any>) => {
         state.loading = true;
         state.error = action.payload;
-        console.log("Delete transaction thunk reducer", action.payload);
+        console.error("Delete transaction thunk reducer", action.payload);
       }
     );
   },
